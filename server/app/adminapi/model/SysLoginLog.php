@@ -1,0 +1,14 @@
+<?php
+declare (strict_types = 1);
+
+namespace app\adminapi\model;
+
+use think\Model;
+
+/**
+ * @mixin \think\Model
+ */
+class SysLoginLog extends Model
+{
+    //
+}

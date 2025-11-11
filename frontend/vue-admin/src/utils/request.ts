@@ -1,0 +1,50 @@
+import axios from 'axios'
+import { ElMessage } from 'element-plus'
+import type { ApiResponse } from '@/types/api'
+
+// 创建axios实例
+const request = axios.create({
+  baseURL: '/adminapi',
+  timeout: 10000
+})
+
+// 请求拦截器
+request.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
+
+// 响应拦截器
+request.interceptors.response.use(
+  (response) => {
+    const res: ApiResponse = response.data
+    
+    if (res.code === 200) {
+      return res.data
+    } else {
+      // 处理错误
+      if (res.code === 401) {
+        // token过期，跳转到登录页
+        localStorage.removeItem('token')
+        window.location.href = '/login'
+      }
+      
+      ElMessage.error(res.msg || '请求失败')
+      return Promise.reject(new Error(res.msg || '请求失败'))
+    }
+  },
+  (error) => {
+    ElMessage.error('网络错误或服务器异常')
+    return Promise.reject(error)
+  }
+)
+
+export default request

@@ -2,6 +2,7 @@
 use think\facade\Route;
 
 Route::post('/auth/login', 'Auth/login');
+Route::post('/auth/logout', 'Auth/logout');
 Route::get('', 'Index/index');
 
 Route::group('/', function () {

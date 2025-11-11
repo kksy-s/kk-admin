@@ -98,21 +98,16 @@ class AuthService
     
     /**
      * 获取当前用户信息
-     * @param int $userId 用户ID
-     * @return array ['success' => bool, 'data' => mixed, 'error' => string, 'code' => int]
+     * @param int $userId 用户ID（通过Auth中间件验证过的）
+     * @return array ['success' => bool, 'data' => mixed]
      */
     public function getUserInfo(int $userId): array
     {
-        // 移除try-catch
+        // 直接查询用户信息，不需要再次验证存在性
+        // 因为Auth中间件已经确保了用户存在
         $user = SysUser::find($userId);
-        if (!$user) {
-            return [
-                'success' => false,
-                'error' => '用户不存在',
-                'code' => 404
-            ];
-        }
         
+        // 直接返回用户信息，不需要判断用户是否存在
         return [
             'success' => true,
             'data' => [

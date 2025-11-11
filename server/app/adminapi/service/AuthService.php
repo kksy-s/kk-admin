@@ -46,7 +46,7 @@ class AuthService
             return [
                 'success' => false,
                 'error' => '用户名或密码错误',
-                'code' => 401
+                'code' => 400
             ];
         }
         
@@ -57,7 +57,7 @@ class AuthService
                 return [
                     'success' => false,
                     'error' => '用户名或密码错误',
-                    'code' => 401
+                    'code' => 400
                 ];
             }
         }
